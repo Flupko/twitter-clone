@@ -20,6 +20,9 @@ const SignUpPage = () => {
 
   const { mutate, isError, isPending, error } = useMutation({
     mutationFn: async ({ email, username, fullname, password }) => {
+      username = username?.trim()
+      fullname = fullname?.trim()
+      email = email?.trim()
       const res = await fetch("/api/auth/signup", {
         method: "POST",
         headers: {
