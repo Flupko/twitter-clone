@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 
 import HomePage from "./pages/home/HomePage";
 import SignupPage from "./pages/auth/signup/SignupPage";
@@ -32,6 +32,11 @@ function App() {
     retry: false,
   });
 
+  const location = useLocation();
+
+  console.log(location.pathname);
+  
+
   if (isLoading) {
     return (
       <div className="h-screen flex justify-center items-center">
@@ -45,31 +50,34 @@ function App() {
       {authUser && <Sidebar />}
 
       <div className="w-[110%]">
+        {location.pathname == "/" && (
+          <div className="hidden max-md:block">
+            {authUser && <RightPanel />}
+          </div>
+        )}
 
-      <div className="hidden max-md:block">{authUser && <RightPanel />}</div>
-
-      <Routes>
-        <Route
-          path="/"
-          element={authUser ? <HomePage /> : <Navigate to="/login" />}
-        />
-        <Route
-          path="/signup"
-          element={!authUser ? <SignupPage /> : <Navigate to="/" />}
-        />
-        <Route
-          path="/login"
-          element={!authUser ? <LoginPage /> : <Navigate to="/" />}
-        />
-        <Route
-          path="/notifications"
-          element={authUser ? <NotificationPage /> : <Navigate to="/login" />}
-        />
-        <Route
-          path="/profile/:username"
-          element={authUser ? <ProfilePage /> : <Navigate to="/login" />}
-        />
-      </Routes>
+        <Routes>
+          <Route
+            path="/"
+            element={authUser ? <HomePage /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/signup"
+            element={!authUser ? <SignupPage /> : <Navigate to="/" />}
+          />
+          <Route
+            path="/login"
+            element={!authUser ? <LoginPage /> : <Navigate to="/" />}
+          />
+          <Route
+            path="/notifications"
+            element={authUser ? <NotificationPage /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/profile/:username"
+            element={authUser ? <ProfilePage /> : <Navigate to="/login" />}
+          />
+        </Routes>
       </div>
 
       <Toaster />
