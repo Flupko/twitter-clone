@@ -10,7 +10,7 @@ const notificationRoutes = require("./routes/notification");
 
 const connectMongoDb = require("./db/connectMongoDb");
 
-require('dotenv').config();
+require("dotenv").config();
 
 const path = require("path");
 const { log } = require("console");
@@ -34,13 +34,15 @@ app.use("/api/user", userRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/notifications", notificationRoutes);
 
-__dirname = path.resolve()
+__dirname = path.resolve();
 
 if (process.env.NODE_ENV === "prod") {
+  // Serve static files from the "dist" directory
   app.use(express.static(path.join(__dirname, "frontend", "dist")));
 
+  // For any route that doesn't match a static file, serve index.html
   app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "frontend", "dist"));
+    res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"));
   });
 }
 
