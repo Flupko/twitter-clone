@@ -58,11 +58,13 @@ const Post = ({ post }) => {
     onMutate: async () => {
       const previousPosts = queryClient.getQueryData(["posts"]);
 
+      console.log(previousPosts);
+
       queryClient.cancelQueries(["posts"]);
 
       queryClient.setQueryData(["posts"], (oldData) => {
         return oldData.map((p) => {
-          if (p._id == post._id) {
+          if (p._id === post._id) {
             return {
               ...p,
               likes: isLiked
@@ -70,6 +72,7 @@ const Post = ({ post }) => {
                 : [...p.likes, authUser._id],
             };
           }
+          return p;
         });
       });
 
