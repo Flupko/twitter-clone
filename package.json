@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "NODE_ENV=dev node --watch --env-file=.env backend/server.js",
     "start": "NODE_ENV=prod node --env-file=.env backend/server.js",
-    "build": "npm install && cd frontend && npm install && npm run build"
+    "build": "npm install && cd frontend && npm install && npm run build && cd .."
   },
   "keywords": [],
   "author": "",
