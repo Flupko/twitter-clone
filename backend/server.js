@@ -10,6 +10,9 @@ const notificationRoutes = require("./routes/notification");
 
 const connectMongoDb = require("./db/connectMongoDb");
 
+const path = require("path");
+const { log } = require("console");
+
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
@@ -18,8 +21,9 @@ cloudinary.config({
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+console.log(process.env.NODE_ENV);
 
-app.use(express.json({limit:"5mb"}));
+app.use(express.json({ limit: "5mb" }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(logger);
@@ -28,9 +32,15 @@ app.use("/api/user", userRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/notifications", notificationRoutes);
 
-app.get("/", (req, res) => {
-  res.send("Server is ready");
-});
+__dirname = path.resolve()
+
+if (process.env.NODE_ENV === "prod") {
+  app.use(express.static(path.join(__dirname, "frontend", "dist")));
+
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "frontend", "dist"));
+  });
+}
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
