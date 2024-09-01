@@ -10,6 +10,8 @@ const notificationRoutes = require("./routes/notification");
 
 const connectMongoDb = require("./db/connectMongoDb");
 
+require('dotenv').config();
+
 const path = require("path");
 const { log } = require("console");
 
